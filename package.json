@@ -3,20 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "start": "NODE_ENV=development nodemon index.js --exec babel-node",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=development nodemon ./functions/api.js --exec babel-node",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "netlify deploy --prod"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "nodemon": "^3.0.1",
+    "@google-cloud/local-auth": "^2.1.0",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "babel-register": "^6.26.0"
+    "babel-register": "^6.26.0",
+    "express": "^4.18.2",
+    "googleapis": "^105.0.0",
+    "netlify-cli": "^17.7.0",
+    "netlify-lambda": "^2.0.16",
+    "nodemon": "^3.0.1",
+    "serverless": "^3.38.0",
+    "serverless-http": "^3.2.0"
   }
 }
