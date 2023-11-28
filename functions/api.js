@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const serverless = require('serverless');
+const serverless = require('serverless-http');
 const router = express.Router();
 const port = 8000
 const auth = require("./auth");
@@ -18,13 +18,13 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.json())
-app.use(router);
+// app.use(router);
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+// app.listen(port, () => {
+//     console.log(`Example app listening on port ${port}`)
+// })
 
 router.get('/', (req, res) => {
     console.log(req.headers.hospital);
@@ -115,5 +115,6 @@ router.post('/updatedetails', async (req, res) => {
     }
 });
 
-
+app.use('/.netlify/functions/api', router)
+module.exports.handler = serverless(app)
 
