@@ -1,8 +1,8 @@
 const { google } = require('googleapis');
 
-async function appendValuesAppointment(auth, details) {
+async function appendValuesAppointment(auth, details, hospitalSpreadSheetID) {
 
-    let spreadsheetId = '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4';
+    let spreadsheetId = hospitalSpreadSheetID;
     let range = 'appointment!A:E';
     let valueInputOption = 'RAW'
 

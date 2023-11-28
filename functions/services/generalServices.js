@@ -1,11 +1,30 @@
 const { google } = require('googleapis');
 
-async function getDataByFirstName(auth, first_name) {
+async function listFiles(authClient) {
+    const drive = google.drive({ version: 'v3', auth: authClient });
+    const res = await drive.files.list({
+        pageSize: 10,
+        fields: 'nextPageToken, files(id, name)',
+    });
+    const files = res.data.files;
+    if (files.length === 0) {
+        console.log('No files found.');
+        return { "Message": "No files found." }
+    }
+    // console.log('Files:');
+    return files.map((file) => {
+        // console.log(`${file.name} (${file.id})`);
+        return { "name": `${file.name}`, "ID": `${file.id}` }
+    });
+}
 
+
+async function getDataByFirstName(auth, first_name, hospitalSpreadSheetID) {
+    // console.log({ hospitalSpreadSheetID });
     const service = google.sheets({ version: 'v4', auth });
     try {
         const result = await service.spreadsheets.values.get({
-            spreadsheetId: '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4',
+            spreadsheetId: hospitalSpreadSheetID,
             range: 'patient!A:I'
         });
 
@@ -22,12 +41,12 @@ async function getDataByFirstName(auth, first_name) {
 }
 
 
-async function getDataByLastName(auth, last_name) {
+async function getDataByLastName(auth, last_name, hospitalSpreadSheetID) {
 
     const service = google.sheets({ version: 'v4', auth });
     try {
         const result = await service.spreadsheets.values.get({
-            spreadsheetId: '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4',
+            spreadsheetId: hospitalSpreadSheetID,
             range: 'patient!A:I'
         });
 
@@ -43,12 +62,12 @@ async function getDataByLastName(auth, last_name) {
 }
 
 
-async function getDataByEmail(auth, email) {
+async function getDataByEmail(auth, email, hospitalSpreadSheetID) {
 
     const service = google.sheets({ version: 'v4', auth });
     try {
         const result = await service.spreadsheets.values.get({
-            spreadsheetId: '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4',
+            spreadsheetId: hospitalSpreadSheetID,
             range: 'patient!A:I'
         });
 
@@ -64,12 +83,12 @@ async function getDataByEmail(auth, email) {
 }
 
 
-async function getDataByPhone(auth, phone) {
+async function getDataByPhone(auth, phone, hospitalSpreadSheetID) {
 
     const service = google.sheets({ version: 'v4', auth });
     try {
         const result = await service.spreadsheets.values.get({
-            spreadsheetId: '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4',
+            spreadsheetId: hospitalSpreadSheetID,
             range: 'patient!A:I'
         });
 
@@ -84,12 +103,12 @@ async function getDataByPhone(auth, phone) {
     }
 }
 
-async function getDataByLocation(auth, location) {
+async function getDataByLocation(auth, location, hospitalSpreadSheetID) {
 
     const service = google.sheets({ version: 'v4', auth });
     try {
         const result = await service.spreadsheets.values.get({
-            spreadsheetId: '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4',
+            spreadsheetId: hospitalSpreadSheetID,
             range: 'patient!A:I'
         });
 
@@ -105,12 +124,12 @@ async function getDataByLocation(auth, location) {
 }
 
 
-async function getDataByAddress(auth, address) {
+async function getDataByAddress(auth, address, hospitalSpreadSheetID) {
 
     const service = google.sheets({ version: 'v4', auth });
     try {
         const result = await service.spreadsheets.values.get({
-            spreadsheetId: '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4',
+            spreadsheetId: hospitalSpreadSheetID,
             range: 'patient!A:I'
         });
 
@@ -125,7 +144,11 @@ async function getDataByAddress(auth, address) {
     }
 }
 
-module.exports = { getDataByFirstName, getDataByLastName, getDataByPhone, getDataByEmail, getDataByLocation, getDataByAddress }
+module.exports = {
+    listFiles, getDataByFirstName,
+    getDataByLastName, getDataByPhone,
+    getDataByEmail, getDataByLocation, getDataByAddress
+}
 
 
 
@@ -133,7 +156,7 @@ module.exports = { getDataByFirstName, getDataByLastName, getDataByPhone, getDat
 // async function listAppointmentDetails(auth) {
 //     const sheets = google.sheets({ version: 'v4', auth });
 //     const res = await sheets.spreadsheets.values.get({
-//         spreadsheetId: '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4',
+//         spreadsheetId: hospitalSpreadSheetID,
 //         range: 'appointment!A:E',
 //     });
 //     const rows = res.data.values;
@@ -153,7 +176,7 @@ module.exports = { getDataByFirstName, getDataByLastName, getDataByPhone, getDat
 //     const service = google.sheets({ version: 'v4', auth });
 //     try {
 //         const result = await service.spreadsheets.values.get({
-//             spreadsheetId: '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4',
+//             spreadsheetId: hospitalSpreadSheetID,
 //             range: 'appointment!A:E'
 //         });
 

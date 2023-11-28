@@ -1,8 +1,8 @@
 const { google } = require('googleapis');
 
-async function appendValuesPrescribe(auth, details) {
+async function appendValuesPrescribe(auth, details, hospitalSpreadSheetID) {
 
-    let spreadsheetId = '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4';
+    let spreadsheetId = hospitalSpreadSheetID;
     let range = 'prescribes!A:D';
     let valueInputOption = 'RAW'
 
@@ -31,9 +31,9 @@ async function appendValuesPrescribe(auth, details) {
 }
 
 
-async function updatePrescribesDetailsByID(auth, updatedData) {
+async function updatePrescribesDetailsByID(auth, updatedData, hospitalSpreadSheetID) {
     const sheets = google.sheets({ version: 'v4', auth });
-    const spreadsheetId = '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4';
+    const spreadsheetId = hospitalSpreadSheetID;
     const range = 'prescribes!A:D';
 
     try {
@@ -72,7 +72,7 @@ async function updatePrescribesDetailsByID(auth, updatedData) {
 
         //update works here
         const updateResponse = await sheets.spreadsheets.values.update({
-            spreadsheetId: '1gFfp8mK461sD2BosklqxX-_xE60Td1mplQrVM6D7-M4',
+            spreadsheetId: hospitalSpreadSheetID,
             range: `prescribes!A${rowIndex + 1}:J${rowIndex + 1}`,
             valueInputOption: 'USER_ENTERED',
             resource: {
