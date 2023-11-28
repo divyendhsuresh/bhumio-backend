@@ -36,7 +36,7 @@ router.get('/listfiles', (req, res) => {
         })
 })
 
-router.post('/details', async (req, res) => {
+router.post('/savedetails', async (req, res) => {
     try {
         let details = req.body;
         // console.log(details);
@@ -52,53 +52,25 @@ router.post('/details', async (req, res) => {
     }
 });
 
-router.post('/getdata', async (req, res) => {
-    try {
-        let patientID = req.body;
-        // console.log(details);
-        const authResponse = await auth.authorize();
-        const getResponse = await appointment.updateSheet(authResponse, patientID);
-        res.send(getResponse);
-    } catch (err) {
-        console.error({ err });
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-router.post('/getdata2', async (req, res) => {
+router.post('/searchpatients', async (req, res) => {
     try {
         let data = req.body;
-        // console.log(details);
+        console.log(data);
         const authResponse = await auth.authorize();
-        const getResponse = await appointment.batchGetValues(authResponse, data.patientID);
-        res.send(getResponse);
-    } catch (err) {
-        console.error({ err });
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-
-router.post('/getpatients', async (req, res) => {
-    try {
-        let data = req.body;
-        const authResponse = await auth.authorize();
-        const getResponse = await generalServices.getDataByName(authResponse, data.patientName);
-        res.send(getResponse);
-
-    } catch (err) {
-        console.error({ err });
-        res.status(500).send('Internal Server Error');
-    }
-})
-
-
-router.post('/updatepatients', async (req, res) => {
-    try {
-        let UpdateData = req.body;
-        const authResponse = await auth.authorize();
-        const getResponse = await generalServices.updateDataByID(authResponse, UpdateData.patientID, UpdateData);
-        res.send(getResponse);
+        const getByFirstNameResponse = await generalServices.getDataByFirstName(authResponse, data.firstName);
+        const getByLastNameResponse = await generalServices.getDataByLastName(authResponse, data.lastName);
+        const getDataByAddressResponse = await generalServices.getDataByAddress(authResponse, data.address);
+        const getDataByLocationResponse = await generalServices.getDataByLocation(authResponse, data.location);
+        const getDataByEmailResponse = await generalServices.getDataByEmail(authResponse, data.email);
+        const getDataByPhoneResponse = await generalServices.getDataByPhone(authResponse, data.phone)
+        res.send({
+            "getByFirstNameResponse": getByFirstNameResponse,
+            "getByLastNameResponse": getByLastNameResponse,
+            "getDataByAddressResponse": getDataByAddressResponse,
+            "getDataByLocationResponse": getDataByLocationResponse,
+            "getDataByEmailResponse": getDataByEmailResponse,
+            "getDataByPhoneResponse": getDataByPhoneResponse,
+        });
 
     } catch (err) {
         console.error({ err });
@@ -120,3 +92,6 @@ router.post('/updatedetails', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
+

@@ -8,7 +8,11 @@ async function appendValuesPatient(auth, details) {
 
     const service = google.sheets({ version: 'v4', auth });
     let values = [
-        [`${details.ssn}`, `${details.first_name}`, `${details.last_name}`, `${details.address}`, `${details.location}`, `${details.email}`, `${details.phone}`, `${details.pcp}`, `${details.age}`, `${details.patientID}`]
+        [`${details.ssn}`, `${details.first_name}`,
+        `${details.last_name}`, `${details.address}`,
+        `${details.location}`, `${details.email}`,
+        `${details.phone}`, `${details.pcp}`,
+        `${details.patientID}`, `${details.age}`]
         ,
         // Additional rows ...
     ];
@@ -97,5 +101,5 @@ async function updatePatientdetailsByID(auth, updatedData) {
 }
 
 
-module.exports = { appendValuesPatient,updatePatientdetailsByID }
+module.exports = { appendValuesPatient, updatePatientdetailsByID }
 

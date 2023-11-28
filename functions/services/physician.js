@@ -8,7 +8,8 @@ async function appendValuesPhysician(auth, details) {
 
     const service = google.sheets({ version: 'v4', auth });
     let values = [
-        [`${details.employeeid}`, `${details.physicianName}`, `${details.position}`, `${details.physicianPhone}`]
+        [`${details.employeeid}`, `${details.physicianName}`,
+        `${details.position}`, `${details.physicianPhone}`]
         ,
         // Additional rows ...
     ];

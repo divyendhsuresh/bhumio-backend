@@ -77,7 +77,8 @@ async function updatePrescribesDetailsByID(auth, updatedData) {
             valueInputOption: 'USER_ENTERED',
             resource: {
                 values: [
-                    [`${updatedData.physicianID}`, `${updatedData.patientID}`, `${updatedData.description}`, `${updatedData.dose}`]
+                    [`${updatedData.physicianID}`, `${updatedData.patientID}`,
+                    `${updatedData.description}`, `${updatedData.dose}`]
                 ]
             },
         });
