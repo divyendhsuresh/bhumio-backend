@@ -18,7 +18,9 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.json())
+//for local
 app.use(router);
+//for hosting at netlify 
 // app.use('/.netlify/functions/api', router)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
