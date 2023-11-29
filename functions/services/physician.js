@@ -8,10 +8,9 @@ async function appendValuesPhysician(auth, details, hospitalSpreadSheetID) {
 
     const service = google.sheets({ version: 'v4', auth });
     let values = [
-        [`${details.employeeid}`, `${details.physicianName}`,
-        `${details.position}`, `${details.physicianPhone}`]
+        [details.employeeid, details.physicianName,
+        details.position, details.physicianPhone]
         ,
-        // Additional rows ...
     ];
     const resource = {
         values,
@@ -23,10 +22,9 @@ async function appendValuesPhysician(auth, details, hospitalSpreadSheetID) {
             valueInputOption,
             resource,
         });
-        // console.log('%d cells updated.', result.data.updatedCells);
         return result;
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return err;
     }
 }
@@ -42,7 +40,6 @@ async function updatePhysicianDetailsByID(auth, updatedData, hospitalSpreadSheet
             range,
         });
         // console.log(response.data);
-
         const values = response.data.values;
 
         if (!values || values.length === 0) {
@@ -61,28 +58,25 @@ async function updatePhysicianDetailsByID(auth, updatedData, hospitalSpreadSheet
         // console.log({ "rowIndex": rowIndex });
 
         if (rowIndex === -1) {
-            console.log(`doctor with employeeID ${updatedData.employeeid} not found.`);
+            // console.log(`doctor with employeeID ${updatedData.employeeid} not found.`);
             return { "message": `doctor with employeeID ${updatedData.employeeid} not found.` };
         }
 
-        //update works here
         const updateResponse = await sheets.spreadsheets.values.update({
             spreadsheetId: hospitalSpreadSheetID,
             range: `physician!A${rowIndex + 1}:J${rowIndex + 1}`,
             valueInputOption: 'USER_ENTERED',
             resource: {
+                // string literal requreid here?
                 values: [
-                    [`${updatedData.employeeid}`, `${updatedData.physicianName}`, `${updatedData.position}`, `${updatedData.physicianPhone}`]
+                    [updatedData.employeeid, updatedData.physicianName, updatedData.position, updatedData.physicianPhone]
                 ]
             },
         });
-        console.log(updateResponse.data.updatedCells);
-        // console.log(updateResponse);
-        // console.log(`${updateResponse.data.updatedCells} cells updated.`);
-        return "updated successfully"
+        return { "message": "Updated successfully" }
     } catch (err) {
-        console.error('Error updating patient details:', err);
-        throw err;
+        // console.error('Error updating patient details:', err);
+        return err
     }
 }
 

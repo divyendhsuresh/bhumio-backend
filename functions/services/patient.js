@@ -8,13 +8,12 @@ async function appendValuesPatient(auth, details, hospitalSpreadSheetID) {
 
     const service = google.sheets({ version: 'v4', auth });
     let values = [
-        [`${details.ssn}`, `${details.first_name}`,
-        `${details.last_name}`, `${details.address}`,
-        `${details.location}`, `${details.email}`,
-        `${details.phone}`, `${details.pcp}`,
-        `${details.patientID}`, `${details.age}`]
+        [details.ssn, details.firstName,
+        details.lastName, details.address,
+        details.location, details.email,
+        details.phone, details.pcp,
+        details.patientID, details.age]
         ,
-        // Additional rows ...
     ];
     const resource = {
         values,
@@ -29,7 +28,6 @@ async function appendValuesPatient(auth, details, hospitalSpreadSheetID) {
         // console.log('%d cells updated.', result.data.updatedCells);
         return result;
     } catch (err) {
-        console.log(err);
         return err;
     }
 }
@@ -47,7 +45,6 @@ async function updatePatientdetailsByID(auth, updatedData, hospitalSpreadSheetID
         });
 
         // console.log(response.data);
-
         const values = response.data.values;
 
         if (!values || values.length === 0) {
@@ -66,37 +63,34 @@ async function updatePatientdetailsByID(auth, updatedData, hospitalSpreadSheetID
             return { "message": "Column PatientID not found." };
         }
 
-        const filteredData = values.filter((row) => row[patientIDIndex] === updatedData.patientID);
-        // console.log({ "filteredData": filteredData });
-
         const rowIndex = values.findIndex((row) => row[patientIDIndex] === updatedData.patientID);
         // console.log({ "rowIndex": rowIndex });
 
         if (rowIndex === -1) {
-            console.log(`Patient with PatientID ${patientID} not found.`);
-            return { "message": "Patient with PatientID ${patientID} not found." };
+            console.log(`Patient with PatientID ${updatedData.patientID} not found.`);
+            return { "message": `Patient with PatientID ${updatedData.patientID} not found.` };
         }
 
-        //update works here
+        //update 
         const updateResponse = await sheets.spreadsheets.values.update({
             spreadsheetId: hospitalSpreadSheetID,
             range: `patient!A${rowIndex + 1}:J${rowIndex + 1}`,
             valueInputOption: 'USER_ENTERED',
             resource: {
                 values: [
-                    [`${updatedData.ssn}`, `${updatedData.first_name}`, `${updatedData.last_name}`,
-                    `${updatedData.address}`, `${updatedData.location}`, `${updatedData.email}`,
-                    `${updatedData.phone}`, `${updatedData.pcp}`, `${updatedData.patientID}`, `${updatedData.age}`]
+                    [updatedData.ssn, updatedData.first_name, updatedData.last_name,
+                    updatedData.address, updatedData.location, updatedData.email,
+                    updatedData.phone, updatedData.pcp, updatedData.patientID, updatedData.age]
                 ]
             },
         });
         // console.log(updateResponse.data.updatedCells);
         // console.log(updateResponse);
         // console.log(`${updateResponse.data.updatedCells} cells updated.`);
-        return "sucess"
+        return { "message": `sucessfully updated patient ${updatedData.patientID}` }
     } catch (err) {
-        console.error('Error updating patient details:', err);
-        throw err;
+        // console.error('Error updating patient details:', err);
+        return err;
     }
 }
 

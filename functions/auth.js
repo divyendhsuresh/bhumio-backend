@@ -13,16 +13,17 @@ const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly',
 const TOKEN_PATH = path.join(process.cwd(), 'token.json');
 const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials.json');
 
-
 async function loadSavedCredentialsIfExist() {
     try {
         // const content = await fs.readFile(TOKEN_PATH);//read from file
         // const credentials = JSON.parse(content);
         // return null;
         //passing directly 
+        // MOVE TO ENV!!!!
         const credentials = {"type":"authorized_user","client_id":"1030087095753-tbthdd13ctgruq8jk3f31mdutkdnimei.apps.googleusercontent.com","client_secret":"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","refresh_token":"1//0g89WjmNh6zxzCgYIARAAGBASNwF-L9IrPREiKCPnAuZ7SN3IGRrSO8BV00PUVDF2wGl9GsKUmFJuF19V1J4OKilN124c7TPNJFY"}
         return google.auth.fromJSON(credentials);
     } catch (err) {
+        // WHY NULL HERE
         return null;
     }
 }
@@ -31,6 +32,7 @@ async function loadSavedCredentialsIfExist() {
 async function saveCredentials(client) {
     // const content = await fs.readFile(CREDENTIALS_PATH);
     // const keys = JSON.parse(content);
+    // SECRETS in ENV
     const keys = {
         "installed": {
           "client_id": "1030087095753-tbthdd13ctgruq8jk3f31mdutkdnimei.apps.googleusercontent.com",
@@ -69,6 +71,6 @@ async function authorize() {
     return client;
 }
 
-// module.exports = { authorize }
+module.exports = { authorize }
 
 authorize()
