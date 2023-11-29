@@ -16,8 +16,10 @@ const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials.json');
 
 async function loadSavedCredentialsIfExist() {
     try {
-        // const content = await fs.readFile(TOKEN_PATH);
+        // const content = await fs.readFile(TOKEN_PATH);//read from file
         // const credentials = JSON.parse(content);
+        // return null;
+        //passing directly 
         const credentials = {"type":"authorized_user","client_id":"1030087095753-tbthdd13ctgruq8jk3f31mdutkdnimei.apps.googleusercontent.com","client_secret":"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","refresh_token":"1//0g89WjmNh6zxzCgYIARAAGBASNwF-L9IrPREiKCPnAuZ7SN3IGRrSO8BV00PUVDF2wGl9GsKUmFJuF19V1J4OKilN124c7TPNJFY"}
         return google.auth.fromJSON(credentials);
     } catch (err) {
@@ -66,6 +68,7 @@ async function authorize() {
     }
     return client;
 }
-module.exports = { authorize }
 
-// authorize()
+// module.exports = { authorize }
+
+authorize()
