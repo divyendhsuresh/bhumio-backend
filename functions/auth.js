@@ -18,12 +18,9 @@ async function loadSavedCredentialsIfExist() {
         // const content = await fs.readFile(TOKEN_PATH);//read from file
         // const credentials = JSON.parse(content);
         // return null;
-        //passing directly 
-        // MOVE TO ENV!!!!
-        const credentials = {"type":"authorized_user","client_id":"1030087095753-tbthdd13ctgruq8jk3f31mdutkdnimei.apps.googleusercontent.com","client_secret":"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","refresh_token":"1//0g89WjmNh6zxzCgYIARAAGBASNwF-L9IrPREiKCPnAuZ7SN3IGRrSO8BV00PUVDF2wGl9GsKUmFJuF19V1J4OKilN124c7TPNJFY"}
+        const credentials = { "type": "authorized_user", "client_id": "1030087095753-tbthdd13ctgruq8jk3f31mdutkdnimei.apps.googleusercontent.com", "client_secret": "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", "refresh_token": "1//0g89WjmNh6zxzCgYIARAAGBASNwF-L9IrPREiKCPnAuZ7SN3IGRrSO8BV00PUVDF2wGl9GsKUmFJuF19V1J4OKilN124c7TPNJFY" }
         return google.auth.fromJSON(credentials);
     } catch (err) {
-        // WHY NULL HERE
         return null;
     }
 }
@@ -32,19 +29,18 @@ async function loadSavedCredentialsIfExist() {
 async function saveCredentials(client) {
     // const content = await fs.readFile(CREDENTIALS_PATH);
     // const keys = JSON.parse(content);
-    // SECRETS in ENV
     const keys = {
         "installed": {
-          "client_id": "1030087095753-tbthdd13ctgruq8jk3f31mdutkdnimei.apps.googleusercontent.com",
-          "project_id": "bhumio-406316",
-          "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-          "token_uri": "https://oauth2.googleapis.com/token",
-          "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-          "client_secret": "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",
-          "redirect_uris": ["http://localhost"]
+            "client_id": "1030087095753-tbthdd13ctgruq8jk3f31mdutkdnimei.apps.googleusercontent.com",
+            "project_id": "bhumio-406316",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_secret": "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",
+            "redirect_uris": ["http://localhost"]
         }
-      }
-      
+    }
+
     const key = keys.installed || keys.web;
     const payload = JSON.stringify({
         type: 'authorized_user',

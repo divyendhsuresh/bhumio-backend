@@ -19,9 +19,9 @@ app.use((req, res, next) => {
 });
 app.use(express.json())
 //for local
-app.use(router);
+// app.use(router);
 //for hosting at netlify 
-// app.use('/.netlify/functions/api', router)
+app.use('/.netlify/functions/api', router)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -33,7 +33,6 @@ router.get('/', (req, res) => {
     // console.log(req.headers.hospital);
     res.send("app is running")
 })
-
 
 router.get('/listsheetdata', async (req, res) => {
     try {
