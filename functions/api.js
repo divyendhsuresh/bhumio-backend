@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const serverless = require('serverless-http');
 const router = express.Router();
-const port = 8000
+const port = 8000;
 const auth = require("./auth");
 const bodyParser = require('body-parser')
 const patient = require("./services/patient");
@@ -51,7 +51,6 @@ router.post('/savedetails', async (req, res) => {
         let details = req.body;
         // console.log(details);
         const authResponse = await auth.authorize();
-        // Convert to Promise.all
         const appendResponse = await appointment.appendValuesAppointment(authResponse, details, hospitalSpreadSheetID);
         const patientResponse = await patient.appendValuesPatient(authResponse, details, hospitalSpreadSheetID);
         const prescribesResponse = await prescribes.appendValuesPrescribe(authResponse, details, hospitalSpreadSheetID);
@@ -69,19 +68,19 @@ router.post('/searchpatients', async (req, res) => {
         let data = req.body;
         // console.log(data);
         const authResponse = await auth.authorize();
-        const getByFirstNameResponse = await generalServices.getDataByFirstName(authResponse, data.firstName, hospitalSpreadSheetID);
-        const getByLastNameResponse = await generalServices.getDataByLastName(authResponse, data.lastName, hospitalSpreadSheetID);
-        const getDataByAddressResponse = await generalServices.getDataByAddress(authResponse, data.address, hospitalSpreadSheetID);
-        const getDataByLocationResponse = await generalServices.getDataByLocation(authResponse, data.location, hospitalSpreadSheetID);
-        const getDataByEmailResponse = await generalServices.getDataByEmail(authResponse, data.email, hospitalSpreadSheetID);
-        const getDataByPhoneResponse = await generalServices.getDataByPhone(authResponse, data.phone, hospitalSpreadSheetID)
+        const firstNameResult = await generalServices.getDataByFirstName(authResponse, data.firstName, hospitalSpreadSheetID);
+        const lastNameResult = await generalServices.getDataByLastName(authResponse, data.lastName, hospitalSpreadSheetID);
+        const addressResult = await generalServices.getDataByAddress(authResponse, data.address, hospitalSpreadSheetID);
+        const locationResult = await generalServices.getDataByLocation(authResponse, data.location, hospitalSpreadSheetID);
+        const emailResult = await generalServices.getDataByEmail(authResponse, data.email, hospitalSpreadSheetID);
+        const phoneResult = await generalServices.getDataByPhone(authResponse, data.phone, hospitalSpreadSheetID)
         res.send({
-            getByFirstNameResponse,
-            getByLastNameResponse,
-            getDataByAddressResponse,
-            getDataByLocationResponse,
-            getDataByEmailResponse,
-            getDataByPhoneResponse,
+            firstNameResult,
+            lastNameResult,
+            addressResult,
+            locationResult,
+            emailResult,
+            phoneResult
         });
 
     } catch (err) {
@@ -96,14 +95,16 @@ router.post('/updatedetails', async (req, res) => {
         let details = req.body;
         // console.log(details);
         const authResponse = await auth.authorize();
-        // Promise.all
         const updatedPatientResponse = await patient.updatePatientdetailsByID(authResponse, details, hospitalSpreadSheetID);
         const updatedPrescribesResponse = await prescribes.updatePrescribesDetailsByID(authResponse, details, hospitalSpreadSheetID);
         const updatedphysicianResponse = await physician.updatePhysicianDetailsByID(authResponse, details, hospitalSpreadSheetID);
-        res.send("Details Updated");
+        res.send(
+            updatedPatientResponse,
+            updatedPrescribesResponse,
+            updatedphysicianResponse);
     } catch (err) {
-        console.error({ err });
-        res.status(500).send('Internal Server Error');
+        // console.error({ err });
+        res.status(500).send('Internal Server Error', err);
     }
 });
 

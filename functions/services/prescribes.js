@@ -61,7 +61,7 @@ async function updatePrescribesDetailsByID(auth, updatedData, hospitalSpreadShee
         // console.log({ "rowIndex": rowIndex });
 
         if (rowIndex === -1) {
-            console.log(`Patient with PatientID ${updatedData.patientID} not found.`);
+            // console.log(`Patient with PatientID ${updatedData.patientID} not found.`);
             return { "message": `Patient with PatientID ${updatedData.patientID} not found.` };
         }
 
